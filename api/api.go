@@ -24,8 +24,8 @@ func NewApi(siswaRepo repository.SiswaRepository, beasiswaRepo repository.Beasis
 	mux.Handle("/api/login", api.POST(http.HandlerFunc(api.login)))
 	mux.Handle("/api/register", api.POST(http.HandlerFunc(api.register)))
 
-	mux.Handle("/api/siswa", api.GET(http.HandlerFunc(api.getSiswa)))
-	mux.Handle("/api/siswa/", api.GET(http.HandlerFunc(api.getSiswaById)))
+	mux.Handle("/api/siswa/all", api.GET(http.HandlerFunc(api.getSiswa)))
+	mux.Handle("/api/siswa", api.GET(http.HandlerFunc(api.getSiswaById)))
 	mux.Handle("/api/beasiswa", api.GET(http.HandlerFunc(api.getBeasiswa)))
 	mux.Handle("/api/beasiswa/", api.GET(http.HandlerFunc(api.getBeasiswaById)))
 
