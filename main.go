@@ -5,6 +5,7 @@ import (
 	"final-project/repository"
 	"database/sql"
 	_ "github.com/mattn/go-sqlite3"
+	"final-project/db/migration"
 )
 
 func main(){
@@ -12,6 +13,7 @@ func main(){
 	if err != nil {
 		panic(err)
 	}
+	migration.Generate(db)
 
 	siswaRepo := repository.NewSiswaRepository(db)
 	beasiswaRepo := repository.NewBeasiswaRepository(db)

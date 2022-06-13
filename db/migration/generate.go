@@ -1,4 +1,4 @@
-package main
+package migration
 
 import (
 	"database/sql"
@@ -6,13 +6,13 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func main() {
-	db, err := sql.Open("sqlite3", "./beasiswa.db")
-	if err != nil {
-		panic(err)
-	}
+func Generate(db *sql.DB) {
+	// db, err := sql.Open("sqlite3", "./beasiswa.db")
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	_, err = db.Exec(`
+	_, err := db.Exec(`
 		CREATE TABLE IF NOT EXISTS beasiswa (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		nama TEXT,
