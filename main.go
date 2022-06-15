@@ -1,14 +1,16 @@
 package main
 
 import (
-	"final-project/api"
-	"final-project/repository"
 	"database/sql"
-	_ "github.com/mattn/go-sqlite3"
+
+	"final-project/api"
 	"final-project/db/migration"
+	"final-project/repository"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
-func main(){
+func main() {
 	db, err := sql.Open("sqlite3", "./beasiswa.db")
 	if err != nil {
 		panic(err)
@@ -17,6 +19,7 @@ func main(){
 
 	siswaRepo := repository.NewSiswaRepository(db)
 	beasiswaRepo := repository.NewBeasiswaRepository(db)
-	mainApi := api.NewApi(*siswaRepo, *beasiswaRepo)
-	mainApi.Start() 
+	pendaftaranRepo := repository.NewPendaftaranRepository(db)
+	mainApi := api.NewApi(*siswaRepo, *beasiswaRepo, *pendaftaranRepo)
+	mainApi.Start()
 }
