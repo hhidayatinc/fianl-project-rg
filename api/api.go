@@ -1,24 +1,27 @@
 package api
 
 import (
-	"final-project/repository"
 	"fmt"
 	"net/http"
+
+	"final-project/repository"
 )
 
 type API struct {
-	mux *http.ServeMux
-	siswaRepo repository.SiswaRepository
-	beasiswaRepo repository.BeasiswaRepository
+	mux             *http.ServeMux
+	siswaRepo       repository.SiswaRepository
+	beasiswaRepo    repository.BeasiswaRepository
+	pendaftaranRepo repository.PendaftaranRepository
 }
 
-func NewApi(siswaRepo repository.SiswaRepository, beasiswaRepo repository.BeasiswaRepository) *API {
+func NewApi(siswaRepo repository.SiswaRepository, beasiswaRepo repository.BeasiswaRepository, pendaftaranRepo repository.PendaftaranRepository) *API {
 	mux := http.NewServeMux()
 
 	api := &API{
-		mux: mux,
-		siswaRepo: siswaRepo,
-		beasiswaRepo: beasiswaRepo,
+		mux:             mux,
+		siswaRepo:       siswaRepo,
+		beasiswaRepo:    beasiswaRepo,
+		pendaftaranRepo: pendaftaranRepo,
 	}
 
 	mux.Handle("/api/login", api.POST(http.HandlerFunc(api.login)))
@@ -26,8 +29,10 @@ func NewApi(siswaRepo repository.SiswaRepository, beasiswaRepo repository.Beasis
 
 	mux.Handle("/api/siswa/all", api.GET(http.HandlerFunc(api.getSiswa)))
 	mux.Handle("/api/siswa", api.GET(http.HandlerFunc(api.getSiswaById)))
+
 	mux.Handle("/api/beasiswa", api.GET(http.HandlerFunc(api.getBeasiswa)))
 	mux.Handle("/api/beasiswa/", api.GET(http.HandlerFunc(api.getBeasiswaById)))
+	mux.Handle("/api/beasiswa/register", api.AuthMiddleware(http.HandlerFunc(api.RegisterBeasiswa)))
 
 	// mux.HandleFunc("/api/siswa", api.handleSiswa)
 	// mux.HandleFunc("/api/siswa/{id}", api.getSiswaById)
@@ -46,15 +51,11 @@ func NewApi(siswaRepo repository.SiswaRepository, beasiswaRepo repository.Beasis
 	return api
 }
 
-func (api *API) Handler() *http.ServeMux{
+func (api *API) Handler() *http.ServeMux {
 	return api.mux
 }
 
-func (api *API) Start(){
+func (api *API) Start() {
 	fmt.Println("Server is running on port 8080")
 	http.ListenAndServe(":8080", api.Handler())
 }
-
-
-
-
